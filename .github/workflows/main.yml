@@ -8,7 +8,7 @@ jobs:
       matrix:
         arch: [arm, arm64, x86, x86_64]
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     env:
       CMAKE_VERSION: 3.18.4
@@ -18,7 +18,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt-get install -y build-essential gcc-multilib python unzip pkg-config p7zip-full
+        sudo apt-get update
+        sudo apt-get install -y build-essential gcc-multilib python3 unzip pkg-config p7zip-full ccache
         cd /home/runner/
         wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-Linux-x86_64.tar.gz
         tar xvf cmake-$CMAKE_VERSION-Linux-x86_64.tar.gz
