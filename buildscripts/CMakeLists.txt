@@ -211,8 +211,9 @@ ExternalProject_Add(boost
 	--with-program_options
 	--with-system
 	--with-iostreams
+	--with-regex
 	--ignore-site-config
-	toolset=clang-android
+	toolset=clang
 	architecture=${BOOST_ARCH}
 	address-model=${BOOST_ADDRESS_MODEL}
 	cflags=$ENV{CFLAGS}
@@ -224,10 +225,11 @@ ExternalProject_Add(boost
 	link=static
 	runtime-link=static
 	install
-	COMMAND ${host}-ranlib ${prefix}/lib/libboost_filesystem.a
-	COMMAND ${host}-ranlib ${prefix}/lib/libboost_program_options.a
-	COMMAND ${host}-ranlib ${prefix}/lib/libboost_system.a
-	COMMAND ${host}-ranlib ${prefix}/lib/libboost_iostreams.a
+	COMMAND llvm-ranlib ${prefix}/lib/libboost_filesystem.a
+	COMMAND llvm-ranlib ${prefix}/lib/libboost_program_options.a
+	COMMAND llvm-ranlib ${prefix}/lib/libboost_system.a
+	COMMAND llvm-ranlib ${prefix}/lib/libboost_iostreams.a
+	COMMAND llvm-ranlib ${prefix}/lib/libboost_regex.a
 )
 
 ExternalProject_Add(ffmpeg
