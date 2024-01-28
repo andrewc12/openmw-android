@@ -219,7 +219,7 @@ ExternalProject_Add(openal
 )
 
 ExternalProject_Add(boost
-	URL https://github.com/boostorg/boost/releases/download/boost-1.83.0/boost-1.83.0.tar.gz
+	URL https://github.com/boostorg/boost/releases/download/boost-${BOOST_VERSION}/boost-${BOOST_VERSION}.tar.gz
 	#URL_HASH ${BOOST_HASH}
 	DOWNLOAD_DIR ${download_dir}
 
