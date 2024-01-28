@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      CMAKE_VERSION: 3.18.4
+      CMAKE_VERSION: 3.28.1
 
     steps:
     - uses: actions/checkout@v4
