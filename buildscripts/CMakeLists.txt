@@ -5,8 +5,8 @@ set(LIBJPEG_TURBO_VERSION 1.5.3)
 set(LIBJPEG_TURBO_HASH SHA256=b24890e2bb46e12e72a79f7e965f409f4e16466d00e1dd15d93d73ee6b592523)
 
 # http://www.libpng.org/pub/png/libpng.html
-set(LIBPNG_VERSION 1.6.37)
-set(LIBPNG_HASH SHA256=505e70834d35383537b6491e7ae8641f1a4bed1876dbfe361201fc80868d88ca)
+set(LIBPNG_VERSION 1.6.41)
+set(LIBPNG_HASH SHA256=D236EF40D8733B5A1F5DFD3F8386A7741A0BDD896B6677BE0A9CEC9747296F4C)
 
 # https://www.freetype.org/index.html#news
 set(FREETYPE2_VERSION 2.10.4)
@@ -145,8 +145,7 @@ ExternalProject_Add(libjpeg-turbo
 )
 
 ExternalProject_Add(libpng
-	URL http://prdownloads.sourceforge.net/libpng/libpng-${LIBPNG_VERSION}.tar.xz
-	https://github.com/xyzz/openmw-deps/releases/download/v0/libpng-${LIBPNG_VERSION}.tar.xz
+	URL https://github.com/pnggroup/libpng/archive/refs/tags/v${LIBPNG_VERSION}.tar.gz
 	URL_HASH ${LIBPNG_HASH}
 	DOWNLOAD_DIR ${download_dir}
 
