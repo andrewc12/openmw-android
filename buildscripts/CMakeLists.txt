@@ -13,8 +13,8 @@ set(FREETYPE2_VERSION 2.10.4)
 set(FREETYPE2_HASH SHA256=5eab795ebb23ac77001cfb68b7d4d50b5d6c7469247b0b01b2c953269f658dac)
 
 # https://github.com/kcat/openal-soft/releases
-set(OPENAL_VERSION 1.21.1)
-set(OPENAL_HASH SHA256=8ac17e4e3b32c1af3d5508acfffb838640669b4274606b7892aa796ca9d7467f)
+set(OPENAL_VERSION 1.23.1)
+set(OPENAL_HASH SHA256=796F4B89134C4E57270B7F0D755F0FA3435B90DA437B745160A49BD41C845B21)
 
 # http://www.boost.org/users/download/
 set(BOOST_VERSION 1.69.0)
@@ -172,8 +172,7 @@ ExternalProject_Add(freetype2
 )
 
 ExternalProject_Add(openal
-	URL https://github.com/kcat/openal-soft/archive/${OPENAL_VERSION}.tar.gz
-	https://github.com/xyzz/openmw-deps/releases/download/v0/openal-soft-${OPENAL_VERSION}.tar.gz
+	URL https://github.com/kcat/openal-soft/releases/download/${OPENAL_VERSION}/openal-soft-${OPENAL_VERSION}.tar.bz2
 	URL_HASH ${OPENAL_HASH}
 	DOWNLOAD_DIR ${download_dir}
 
