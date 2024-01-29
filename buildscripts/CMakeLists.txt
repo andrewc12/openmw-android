@@ -456,6 +456,7 @@ ExternalProject_Add(osg
 	CONFIGURE_COMMAND ${wrapper_command} cmake <SOURCE_DIR>
 	${COMMON_CMAKE_ARGS}
 	${OSG_COMMON}
+	-DCMAKE_CXX_FLAGS=-std=gnu++11\ -I${prefix}/include/\ $ENV{CXXFLAGS}
 
 	BUILD_COMMAND ${wrapper_command} $(MAKE)
 
