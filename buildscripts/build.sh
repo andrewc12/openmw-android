@@ -157,7 +157,7 @@ pushd build/$ARCH/
 source ./command_wrapper.sh true
 
 # Build!
-cmake ../.. \
+cmake --trace ../.. \
 	-DCMAKE_INSTALL_PREFIX=$DIR/prefix/$ARCH/ \
 	-DARCH=$ARCH \
 	-DBUILD_TYPE=$BUILD_TYPE \
