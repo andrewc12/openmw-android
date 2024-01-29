@@ -30,7 +30,7 @@ android {
         versionCode 46
         versionName calculateVersion()
 
-        minSdkVersion 21
+        minSdkVersion 24
         // Do not update past 29 -- see https://github.com/xyzz/openmw-android/issues/30
         targetSdkVersion 29
 
