@@ -25,11 +25,24 @@ jobs:
         wget https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-Linux-x86_64.tar.gz
         tar xvf cmake-$CMAKE_VERSION-Linux-x86_64.tar.gz
 
+    - name: Prepare ccache timestamp
+      id: ccache_cache_timestamp
+      run: |
+        echo "timestamp=$(date -u +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+
+    - name: ccache cache files
+      uses: actions/cache@v4.0.0
+      with:
+        path: ~/.cache/ccache
+        key: ${{ matrix.arch }}-ccache-${{ env.timestamp }}
+        restore-keys: |
+          ${{ matrix.arch }}-ccache-
+
     - name: Build native libraries
       run: |
         export PATH=/home/runner/cmake-$CMAKE_VERSION-Linux-x86_64/bin/:$PATH
         cd buildscripts
-        ./build.sh --arch ${{ matrix.arch }}
+        ./build.sh --ccache --arch ${{ matrix.arch }}
 
     - name: Build the APK
       run: |
