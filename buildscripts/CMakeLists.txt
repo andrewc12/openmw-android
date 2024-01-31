@@ -52,6 +52,9 @@ set(LZ4_HASH SHA256=030644df4611007ff7dc962d981f390361e6c97a34e5cbc393ddfbe019ff
 set(LUAJIT_VERSION 2.1.0-beta3)
 set(LUAJIT_HASH SHA256=1ad2e34b111c802f9d0cdf019e986909123237a28c746b21295b63c9e785d9c3)
 
+set(LIBICU_VERSION 74-1)
+set(LIBICU_HASH SHA256=C726CACE404542D36CC41EAFFBB1464213304572CE5A52731EEE9484BD63413A)
+
 # https://github.com/OpenMW/openmw/commits/master
 set(OPENMW_VERSION 1644430bc08aa537621b21bf7bfb1f5c0f3a9d92)
 set(OPENMW_HASH SHA256=8ce70ffabcc03dba33fe955b273ae6a6afe3ae054797261f38781a869a0e04ec)
@@ -151,6 +154,29 @@ ExternalProject_Add(libpng
 
 	CONFIGURE_COMMAND ${wrapper_command} <SOURCE_DIR>/configure
 	${COMMON_AUTOCONF_FLAGS}
+
+	BUILD_COMMAND ${wrapper_command} $(MAKE) check_PROGRAMS= bin_PROGRAMS=
+
+	INSTALL_COMMAND ${wrapper_command} $(MAKE) install check_PROGRAMS= bin_PROGRAMS=
+)
+
+
+set(libicu_flags
+	--disable-tests
+	--disable-samples
+	--disable-icuio
+	--disable-extras
+	--disable-tools
+	--with-cross-build=${CMAKE_SOURCE_DIR}/build/icu-host-build)
+
+ExternalProject_Add(libicu
+	URL https://github.com/unicode-org/icu/archive/refs/tags/release-${LIBICU_VERSION}.zip
+	URL_HASH ${LIBICU_HASH}
+	DOWNLOAD_DIR ${download_dir}
+
+	CONFIGURE_COMMAND ${wrapper_command} <SOURCE_DIR>/icu4c/source/configure
+	${COMMON_AUTOCONF_FLAGS}
+	${libicu_flags}
 
 	BUILD_COMMAND ${wrapper_command} $(MAKE) check_PROGRAMS= bin_PROGRAMS=
 
@@ -492,7 +518,7 @@ set(OPENMW_PATCH
 )
 
 ExternalProject_Add(openmw
-	DEPENDS boost openal osg mygui ffmpeg sdl2 bullet lz4 luajit
+	DEPENDS boost openal osg mygui ffmpeg sdl2 bullet lz4 luajit libicu
 
 	URL https://github.com/OpenMW/openmw/archive/${OPENMW_VERSION}.tar.gz
 	URL_HASH ${OPENMW_HASH}
