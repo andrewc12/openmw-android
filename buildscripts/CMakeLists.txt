@@ -427,11 +427,73 @@ ExternalProject_Add(luajit
 	COMMAND bash -c "rm ${prefix}/lib/libluajit*.so*"
 )
 
+ExternalProject_Add(zlib
+	URL https://github.com/madler/zlib/archive/refs/tags/v1.2.11.tar.gz
+	URL_HASH SHA256=629380c90a77b964d896ed37163f5c3a34f6e6d897311f1df2a7016355c45eff
+	DOWNLOAD_DIR ${download_dir}
+
+	CONFIGURE_COMMAND ${wrapper_command} cmake <SOURCE_DIR>
+	${COMMON_CMAKE_ARGS}
+
+	BUILD_COMMAND ${wrapper_command} $(MAKE)
+	INSTALL_COMMAND ${wrapper_command} $(MAKE) install
+)
+
+ExternalProject_Add(libxml
+	DEPENDS zlib
+
+	URL https://github.com/GNOME/libxml2/archive/refs/tags/v2.9.12.tar.gz
+	URL_HASH SHA256=8a4ddd706419c210b30b8978a51388937fd9362c34fc9a3d69e4fcc6f8055ee0
+	DOWNLOAD_DIR ${download_dir}
+
+	CONFIGURE_COMMAND ${wrapper_command} cmake <SOURCE_DIR>
+	${COMMON_CMAKE_ARGS}
+	-DBUILD_SHARED_LIBS=OFF
+	-DLIBXML2_WITH_CATALOG=OFF
+	-DLIBXML2_WITH_ICONV=OFF
+	-DLIBXML2_WITH_LZMA=OFF
+	-DLIBXML2_WITH_PROGRAMS=OFF
+	-DLIBXML2_WITH_PYTHON=OFF
+	-DLIBXML2_WITH_TESTS=OFF
+	-DLIBXML2_WITH_ZLIB=ON
+
+	BUILD_COMMAND ${wrapper_command} $(MAKE)
+
+	INSTALL_COMMAND ${wrapper_command} $(MAKE) install
+)
+
+set(LIBCOLLADA_PATCH patch -d <SOURCE_DIR> -p0 -t -N < ${CMAKE_SOURCE_DIR}/patches/libcollada-minizip-fix.patch)
+
+ExternalProject_Add(libcollada
+	DEPENDS libxml boost
+
+	URL https://github.com/rdiankov/collada-dom/archive/v2.5.0.tar.gz
+	URL_HASH SHA256=3be672407a7aef60b64ce4b39704b32816b0b28f61ebffd4fbd02c8012901e0d
+	DOWNLOAD_DIR ${download_dir}
+
+	PATCH_COMMAND ${LIBCOLLADA_PATCH}
+
+	CONFIGURE_COMMAND ${wrapper_command} cmake <SOURCE_DIR>
+	${COMMON_CMAKE_ARGS}
+	-DBoost_USE_STATIC_LIBS=ON
+	-DBoost_USE_STATIC_RUNTIME=ON
+	-DBoost_NO_SYSTEM_PATHS=ON
+	-DBoost_INCLUDE_DIR=${prefix}/include
+	-DHAVE_STRTOQ=0
+	-DUSE_FILE32API=1
+	-DCMAKE_CXX_FLAGS=-std=gnu++11\ -I${prefix}/include/\ $ENV{CXXFLAGS}
+ 
+	BUILD_COMMAND ${wrapper_command} $(MAKE)
+
+	INSTALL_COMMAND ${wrapper_command} $(MAKE) install
+)
+
 set(OSG_COMMON
 	-DOPENGL_PROFILE="GL1"
 	-DDYNAMIC_OPENTHREADS=OFF
 	-DDYNAMIC_OPENSCENEGRAPH=OFF
 	-DBUILD_OSG_PLUGIN_OSG=ON
+	-DBUILD_OSG_PLUGIN_DAE=ON
 	-DBUILD_OSG_PLUGIN_DDS=ON
 	-DBUILD_OSG_PLUGIN_TGA=ON
 	-DBUILD_OSG_PLUGIN_BMP=ON
@@ -441,6 +503,8 @@ set(OSG_COMMON
 	-DJPEG_INCLUDE_DIR=${prefix}/include/
 	-DPNG_INCLUDE_DIR=${prefix}/include/
 	-DFREETYPE_DIR=${prefix}
+        -DCOLLADA_INCLUDE_DIR=${prefix}/include/collada-dom2.5
+        -DCOLLADA_DIR=${prefix}/include/collada-dom2.5/1.4
 	-DOSG_CPP_EXCEPTIONS_AVAILABLE=TRUE
 	-DOSG_GL1_AVAILABLE=ON
 	-DOSG_GL2_AVAILABLE=OFF
@@ -469,7 +533,7 @@ set(OSG_PATCH
 )
 
 ExternalProject_Add(osg
-	DEPENDS libjpeg-turbo libpng gl4es freetype2
+	DEPENDS libjpeg-turbo libpng gl4es freetype2 libcollada
 
 	URL https://github.com/openmw/osg/archive/${OSG_VERSION}.tar.gz
 #	URL_HASH ${OSG_HASH}
