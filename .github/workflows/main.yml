@@ -31,7 +31,7 @@ jobs:
         echo "timestamp=$(date -u +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
 
     - name: ccache cache files
-      uses: actions/cache@v4.0.0
+      uses: actions/cache/restore@v4.0.0
       with:
         path: ~/.cache/ccache
         key: ${{ matrix.arch }}-ccache-${{ env.timestamp }}
@@ -75,3 +75,10 @@ jobs:
       with:
         name: ${{ env.symbols_file }}
         path: ${{ env.symbols_file }}.7z
+
+    - name: ccache cache files
+      uses: actions/cache/save@v4.0.0
+      if: always() 
+      with:
+        path: ~/.cache/ccache
+        key: ${{ matrix.arch }}-ccache-${{ env.timestamp }}
