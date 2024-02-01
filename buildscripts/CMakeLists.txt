@@ -74,7 +74,6 @@ set(COMMON_CMAKE_ARGS
 	-DCMAKE_TOOLCHAIN_FILE=${CMAKE_SOURCE_DIR}/toolchain/ndk/build/cmake/android.toolchain.cmake
 	-DANDROID_ABI=${app_abi}
 	-DANDROID_PLATFORM=${android_platform}
-	-DANDROID_STL=c++_shared
 	-DANDROID_CPP_FEATURES=rtti\ exceptions
 	-DCMAKE_C_FLAGS=-DMYGUI_DONT_REPLACE_NULLPTR\ -I${prefix}/include/\ $ENV{CFLAGS}
 	-DCMAKE_CXX_FLAGS=-DMYGUI_DONT_REPLACE_NULLPTR\ -I${prefix}/include/\ $ENV{CXXFLAGS}
