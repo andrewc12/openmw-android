@@ -75,6 +75,7 @@ set(COMMON_CMAKE_ARGS
 	-DANDROID_ABI=${app_abi}
 	-DANDROID_PLATFORM=${android_platform}
 	-DANDROID_STL=c++_shared
+	-DANDROID_LD=deprecated
 	-DANDROID_CPP_FEATURES=rtti\ exceptions
 	-DCMAKE_C_FLAGS=-DMYGUI_DONT_REPLACE_NULLPTR\ -I${prefix}/include/\ $ENV{CFLAGS}
 	-DCMAKE_CXX_FLAGS=-DMYGUI_DONT_REPLACE_NULLPTR\ -I${prefix}/include/\ $ENV{CXXFLAGS}
@@ -90,6 +91,7 @@ set(COMMON_NDK_BUILD_FLAGS
 	APP_BUILD_SCRIPT=<SOURCE_DIR>/Android.mk
 	APP_PLATFORM=${android_platform}
 	APP_ABI=${app_abi}
+	APP_LD=deprecated
 	LOCAL_LDFLAGS=$ENV{LDFLAGS}
 	-j4
 )
