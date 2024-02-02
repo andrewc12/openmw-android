@@ -166,7 +166,6 @@ set(libicu_flags
 	--disable-samples
 	--disable-icuio
 	--disable-extras
-	--disable-tools
 	--with-cross-build=${CMAKE_SOURCE_DIR}/build/icu-host-build)
 
 ExternalProject_Add(libicu
